@@ -333,6 +333,13 @@ struct iparam get_op_param(struct nes_vm *vm)
 		param.memptr = &vm->mem[location];
 	}
 
+	// Set the arithmetic literal
+	if (param.memptr != NULL) {
+		param.arith_lit = *param.memptr;
+	} else {
+		param.arith_lit = param.val[0];
+	}
+
 	return param;
 }
 

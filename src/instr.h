@@ -140,6 +140,21 @@ struct iparam
 	 *		NULL
 	 */
 	uint8_t *memptr;
+
+	/**
+	 * While val[] holds the raw opcode parameters, and memptr
+	 * points to the related location in memory when applicable,
+	 * the arithmetic literal value is kept in arith_lit. The
+	 * literal value can hail form a raw opcode parameter, or
+	 * an indirect memory lookup. If memptr is set, arith_lit
+	 * contains the dereferenced value at *memptr, otherwise
+	 * it contains val[0].
+	 *
+	 * The value of arith_lit is only intended for use with
+	 * arithmetic and logical operations when the contents of
+	 * the memory is directly used.
+	 */
+	uint8_t arith_lit;
 };
 
 bool is_big_endian();

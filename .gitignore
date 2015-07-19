@@ -6,3 +6,7 @@ cmake_install.cmake
 install_manifest.txt
 build/
 rom/
+
+.*.swp
+.*.swo
+

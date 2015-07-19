@@ -97,22 +97,48 @@ void op_plp(struct nes_vm *vm, const struct instr *instr)
 /* Logical Operations */
 void op_and(struct nes_vm *vm, const struct instr *instr)
 {
+	const struct iparam param = get_op_param(vm);
+	const uint8_t m = param.arith_lit;
 
+	vm->acc &= m;
+
+	vm->status |= STATUS_ZERO * (vm->acc == 0);
+	vm->status |= STATUS_NEGATIVE * ((vm->acc & 0x80) != 0);
 }
 
 void op_eor(struct nes_vm *vm, const struct instr *instr)
 {
+	const struct iparam param = get_op_param(vm);
+	const uint8_t m = param.arith_lit;
 
+	vm->acc ^= m;
+
+	vm->status |= STATUS_ZERO * (vm->acc == 0);
+	vm->status |= STATUS_NEGATIVE * ((vm->acc & 0x80) != 0);
 }
 
 void op_ora(struct nes_vm *vm, const struct instr *instr)
 {
+	const struct iparam param = get_op_param(vm);
+	const uint8_t m = param.arith_lit;
 
+	vm->acc |= m;
+
+	vm->status |= STATUS_ZERO * (vm->acc == 0);
+	vm->status |= STATUS_NEGATIVE * ((vm->acc & 0x80) != 0);
 }
 
 void op_bit(struct nes_vm *vm, const struct instr *instr)
 {
+	const struct iparam param = get_op_param(vm);
+	const uint8_t m = param.arith_lit;
 
+	// N and V are copied from M
+	vm->status |= (m & 0xC0);
+
+	// Z is set if (ACC & M) == 0
+	if ((vm->acc & m) == 0)
+		vm->status |= STATUS_ZERO;
 }
 
 
@@ -120,14 +146,32 @@ void op_bit(struct nes_vm *vm, const struct instr *instr)
 /* Arithmetic Operations */
 void op_adc(struct nes_vm *vm, const struct instr *instr)
 {
-	struct iparam param = get_op_param(vm);
+	const struct iparam param = get_op_param(vm);
+	const uint8_t m = param.arith_lit;
 
-	vm->status |= (vm->acc == 0 * STATUS_ZERO);
+	const uint16_t sum = m + vm->acc + (vm->status & STATUS_CARRY);
+	vm->acc = sum & 0xFF;
+
+	vm->status |= STATUS_ZERO * (vm->acc == 0);
+	vm->status |= STATUS_OVERFLOW * ((uint16_t)vm->acc != sum);
+	if (vm->acc & 0x80) {
+		vm->status |= STATUS_NEGATIVE;
+	}
 }
 
 void op_sbc(struct nes_vm *vm, const struct instr *instr)
 {
+	const struct iparam param = get_op_param(vm);
+	const uint8_t m = param.arith_lit;
 
+	const uint16_t sum = vm->acc - m - !(vm->status & STATUS_CARRY);
+	vm->acc = sum & 0xFF;
+
+	vm->status |= STATUS_ZERO * (vm->acc == 0);
+	vm->status |= STATUS_OVERFLOW * ((uint16_t)vm->acc != sum);
+	if (vm->acc & 0x80) {
+		vm->status |= STATUS_NEGATIVE;
+	}
 }
 
 void op_cmp(struct nes_vm *vm, const struct instr *instr)

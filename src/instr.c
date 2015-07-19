@@ -126,7 +126,7 @@ const struct instr_map g_instr_map[256] =
 	{0X75, {ADC, ZPG_X, op_adc}},
 	{0X76, {ROR, ZPG_X, op_ror}},
 	{0X77, {NO_OPER, NO_FLAG, NULL}},
-	{0X78, {SET, IMPL, op_set}},
+	{0X78, {SEI, IMPL, op_sei}},
 	{0X79, {ADC, ABS_Y, op_adc}},
 	{0X7A, {NO_OPER, NO_FLAG, NULL}},
 	{0X7B, {NO_OPER, NO_FLAG, NULL}},
@@ -506,8 +506,6 @@ const char* instr_oper_to_a(enum instr_oper oper)
 			return "SED";
 		case SEI:
 			return "SEI";
-		case SET:
-			return "SET";
 		case STA:
 			return "STA";
 		case STX:
@@ -658,8 +656,6 @@ enum instr_oper a_to_instr_oper(const char *str)
 		return SED;
 	if (strcmp("SEI", str) == 0)
 		return SEI;
-	if (strcmp("SET", str) == 0)
-		return SET;
 	if (strcmp("STA", str) == 0)
 		return STA;
 	if (strcmp("STX", str) == 0)

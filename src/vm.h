@@ -14,6 +14,9 @@
 #define STATUS_OVERFLOW 0x40
 #define STATUS_NEGATIVE 0x80
 
+#define STACK_BEGIN		0x0100
+#define STACK_END		0x01FF
+
 struct nes_vm
 {
 	uint16_t pc;

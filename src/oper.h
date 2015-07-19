@@ -46,7 +46,6 @@ void op_sbc(struct nes_vm*, const struct instr*);
 void op_cmp(struct nes_vm*, const struct instr*);
 void op_cpx(struct nes_vm*, const struct instr*);
 void op_cpy(struct nes_vm*, const struct instr*);
-void op_set(struct nes_vm*, const struct instr*);
 
 
 /* Incremental and Decremental Operations */
@@ -75,8 +74,8 @@ void op_rts(struct nes_vm*, const struct instr*);
 void op_bcc(struct nes_vm*, const struct instr*);
 void op_bcs(struct nes_vm*, const struct instr*);
 void op_beq(struct nes_vm*, const struct instr*);
-void op_bmi(struct nes_vm*, const struct instr*);
 void op_bne(struct nes_vm*, const struct instr*);
+void op_bmi(struct nes_vm*, const struct instr*);
 void op_bpl(struct nes_vm*, const struct instr*);
 void op_bvc(struct nes_vm*, const struct instr*);
 void op_bvs(struct nes_vm*, const struct instr*);

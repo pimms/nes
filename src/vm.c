@@ -8,6 +8,7 @@ struct nes_vm* nes_create()
 {
 	struct nes_vm *vm = malloc(sizeof(struct nes_vm));
 	memset(vm, 0, sizeof(struct nes_vm));
+	vm->sp = 0xFF;
 	return vm;
 }
 
